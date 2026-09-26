@@ -498,27 +498,6 @@ body {
   animation: fade-up 0.6s ease both;
 }
 
-.battle__header {
-  display: flex;
-  justify-content: center;
-  align-items: baseline;
-  gap: 12px;
-  width: 100%;
-  padding: 16px;
-  font-size: 1.15rem;
-  letter-spacing: 0.08em;
-  color: var(--text-dim);
-}
-
-.battle__header strong {
-  color: var(--text);
-}
-
-.battle__commander {
-  font-weight: 700;
-  color: var(--accent-soft);
-}
-
 .battle__halves {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -528,9 +507,19 @@ body {
 
 .battle__half {
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 0 16px 24px;
+  padding: 16px 16px 24px;
+}
+
+.battle__title {
+  margin: 0 0 16px;
+  font-size: clamp(1rem, 1.6vw, 1.35rem);
+  letter-spacing: 0.08em;
+  text-align: center;
+  text-transform: uppercase;
+  color: var(--accent-soft);
 }
 
 .battle__half + .battle__half {

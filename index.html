@@ -7,7 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/style.css?v=5">
+  <link rel="stylesheet" href="css/style.css?v=6">
 </head>
 <body>
   <!-- Shown instead of the game on small screens (phones, small tablets) -->
@@ -102,21 +102,19 @@
 
   <!-- Battle: split screen with the chosen battle space (left) and a plain grid (right) -->
   <main id="battle" class="screen battle" hidden>
-    <header class="battle__header">
-      <span id="battle-commander" class="battle__commander"></span>
-      <span class="battle__divider" aria-hidden="true">&middot;</span>
-      <span>Battle space <strong id="battle-range"></strong></span>
-    </header>
     <div class="battle__halves">
-      <section class="battle__half" aria-label="Your battle space">
+      <section class="battle__half" aria-labelledby="player-space-title">
+        <h2 id="player-space-title" class="battle__title"></h2>
         <div id="battle-map" class="board-wrap board-wrap--battle"></div>
       </section>
-      <section class="battle__half" aria-label="Empty grid">
+      <section class="battle__half" aria-labelledby="opponent-space-title">
+        <h2 id="opponent-space-title" class="battle__title"></h2>
         <div id="battle-grid" class="board-wrap board-wrap--battle board-wrap--plain"></div>
       </section>
     </div>
   </main>
 
-  <script src="js/main.js?v=5"></script>
+  <script src="js/names.js?v=6"></script>
+  <script src="js/main.js?v=6"></script>
 </body>
 </html>

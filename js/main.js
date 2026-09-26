@@ -8,6 +8,7 @@ const MAJOR_LINE_EVERY = 10;
 const LOCKED_PAUSE_MS = 1500;   // how long the frozen selection is shown before the split view
 
 let playerName = "";
+let opponentName = "";     // picked at random from OPPONENT_NAMES (js/names.js) each new game
 
 // Top-left cell (0-based) of the player's battle space.
 const selection = { col: 0, row: 0 };
@@ -228,8 +229,8 @@ function showBattle() {
   const game = document.getElementById("game");
   const battle = document.getElementById("battle");
 
-  document.getElementById("battle-commander").textContent = `Commander ${playerName}`;
-  document.getElementById("battle-range").textContent = rangeLabel(battleSpace.col, battleSpace.row);
+  document.getElementById("player-space-title").textContent = `Commander ${playerName}'s Battle Space`;
+  document.getElementById("opponent-space-title").textContent = `Commander ${opponentName}'s Battle Space`;
 
   // Left: the chosen 15 x 15 slice of the terrain, scaled up to fill the board.
   const map = createBoard(document.getElementById("battle-map"), battleSpace.size);
@@ -246,6 +247,7 @@ function showBattle() {
 }
 
 function startGame() {
+  opponentName = randomOpponentName();
   document.getElementById("game-commander").textContent = `Commander ${playerName}`;
   buildAxes(document.getElementById("axis-top"), document.getElementById("axis-left"), GRID_SIZE, LABEL_EVERY);
   buildGridLines(document.getElementById("board-grid"), GRID_SIZE, MAJOR_LINE_EVERY);
