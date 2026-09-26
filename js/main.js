@@ -73,34 +73,43 @@ function buildGridLines(svg, cells, majorEvery = 0) {
   svg.querySelector(".board__grid-major").setAttribute("d", major);
 }
 
-// Draws one line per label, running through the centre of each label's slot, so every
-// intersection is a named point (e.g. F5 = line F meets line 5).
-function buildLabelledLines(svg, lines) {
-  const first = 0.5;
-  const last = lines - 0.5;
-  let path = "";
-  for (let i = 0; i < lines; i++) {
-    const pos = i + 0.5;
-    path += `M${pos} ${first}V${last}M${first} ${pos}H${last}`;
-  }
-  svg.querySelector(".board__grid-minor").setAttribute("d", path);
-}
-
 // Builds a board with `lines` labelled lines each way inside `wrap` and returns the board element.
+// The board edges are unlabelled; labelled line i sits (i + 1) steps in from the edge, so the
+// first intersection is A1 and every intersection is a named point (e.g. F5 = line F meets line 5).
 function createBoard(wrap, lines) {
-  wrap.style.setProperty("--cells", lines);
+  const steps = lines + 1;
   wrap.innerHTML = `
     <div class="axis-corner" aria-hidden="true"></div>
-    <div class="axis axis--top" aria-hidden="true"></div>
-    <div class="axis axis--left" aria-hidden="true"></div>
-    <div class="board">
-      <svg class="board__grid" viewBox="0 0 ${lines} ${lines}" preserveAspectRatio="none" aria-hidden="true">
+    <div class="axis axis--top axis--points" aria-hidden="true"></div>
+    <div class="axis axis--left axis--points" aria-hidden="true"></div>
+    <div class="board board--points">
+      <svg class="board__grid" viewBox="0 0 ${steps} ${steps}" preserveAspectRatio="none" aria-hidden="true">
         <path class="board__grid-minor"></path>
-        <path class="board__grid-major"></path>
       </svg>
     </div>`;
-  buildAxes(wrap.querySelector(".axis--top"), wrap.querySelector(".axis--left"), lines);
-  buildLabelledLines(wrap.querySelector(".board__grid"), lines);
+
+  const top = wrap.querySelector(".axis--top");
+  const left = wrap.querySelector(".axis--left");
+  let path = "";
+  for (let i = 0; i < lines; i++) {
+    const pos = i + 1;
+    const pct = `${(pos / steps) * 100}%`;
+    path += `M${pos} 0V${steps}M0 ${pos}H${steps}`;
+
+    const colLabel = document.createElement("span");
+    colLabel.className = "axis__label";
+    colLabel.style.left = pct;
+    colLabel.textContent = columnLabel(i);
+    top.appendChild(colLabel);
+
+    const rowLabel = document.createElement("span");
+    rowLabel.className = "axis__label";
+    rowLabel.style.top = pct;
+    rowLabel.textContent = String(i + 1);
+    left.appendChild(rowLabel);
+  }
+  wrap.querySelector(".board__grid-minor").setAttribute("d", path);
+
   return wrap.querySelector(".board");
 }
 

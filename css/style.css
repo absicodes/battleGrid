@@ -540,6 +540,32 @@ body {
   stroke: rgba(255, 255, 255, 0.35);
 }
 
+/* Labels sit exactly on their grid line rather than in a cell */
+.axis--points {
+  display: block;
+}
+
+.axis--points .axis__label {
+  position: absolute;
+}
+
+.axis--top.axis--points .axis__label {
+  top: 0;
+  bottom: 0;
+  transform: translateX(-50%);
+}
+
+.axis--left.axis--points .axis__label {
+  left: 0;
+  right: 0;
+  transform: translateY(-50%);
+}
+
+/* Unlabelled board edge */
+.board--points {
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.35);
+}
+
 .board-wrap--plain .board {
   background: none;
 }
