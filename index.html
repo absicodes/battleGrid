@@ -7,7 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/style.css?v=3">
+  <link rel="stylesheet" href="css/style.css?v=4">
 </head>
 <body>
   <!-- Shown instead of the game on small screens (phones, small tablets) -->
@@ -40,12 +40,67 @@
     <p class="splash__status">Charting the battle space&hellip;</p>
   </section>
 
-  <!-- Main game: built out in upcoming iterations -->
+  <!-- Main game: battle space selection -->
   <main id="game" class="screen game" hidden>
-    <h1 class="game__title">BattleGrid</h1>
-    <p class="game__note">The battlefield is being prepared. Stay tuned.</p>
+    <header class="game__header">
+      <h1 class="game__title">The Battle Space</h1>
+      <p id="game-commander" class="game__commander"></p>
+    </header>
+
+    <div class="game__body">
+      <div class="board-wrap">
+        <div class="axis-corner" aria-hidden="true"></div>
+        <div id="axis-top" class="axis axis--top" aria-hidden="true">
+          <div id="axis-top-band" class="axis__band" hidden></div>
+        </div>
+        <div id="axis-left" class="axis axis--left" aria-hidden="true">
+          <div id="axis-left-band" class="axis__band" hidden></div>
+        </div>
+        <div id="board" class="board" role="img" aria-label="Battle space map, 100 by 100 grid">
+          <svg class="board__grid" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+            <path id="grid-minor" class="board__grid-minor"></path>
+            <path id="grid-major" class="board__grid-major"></path>
+          </svg>
+          <div id="selector" class="selector" tabindex="0" hidden
+               aria-label="Battle space selector. Use arrow keys to move, hold Shift for bigger steps."></div>
+        </div>
+      </div>
+
+      <aside class="panel">
+        <!-- Stage 1: view the whole battle space -->
+        <div id="stage-view" class="panel__stage">
+          <h2 class="panel__title">Survey the waters</h2>
+          <p class="panel__text">This is the full theatre of operations: a <strong>100 &times; 100</strong> grid.
+            Columns run <strong>A</strong> to <strong>CV</strong> and rows <strong>1</strong> to <strong>100</strong>.</p>
+          <p class="panel__text">Take a good look, then pick the <strong>15 &times; 15</strong> area where your battle will be fought.</p>
+          <button id="btn-choose" class="btn" type="button">Choose Battle Space</button>
+        </div>
+
+        <!-- Stage 2: slide the 15 x 15 selector -->
+        <div id="stage-select" class="panel__stage" hidden>
+          <h2 class="panel__title">Choose your battle space</h2>
+          <p class="panel__text">Drag the frame, click anywhere on the map, or use the arrow keys (hold Shift for bigger steps).</p>
+          <dl class="readout">
+            <dt>Selected</dt>
+            <dd id="readout-range">&ndash;</dd>
+            <dt>Cursor</dt>
+            <dd id="readout-cursor">&ndash;</dd>
+          </dl>
+          <button id="btn-confirm" class="btn" type="button">Confirm Battle Space</button>
+        </div>
+
+        <!-- Stage 3: selection locked in -->
+        <div id="stage-locked" class="panel__stage" hidden>
+          <h2 class="panel__title">Battle space locked</h2>
+          <p class="panel__text">Your battle will be fought in</p>
+          <p id="locked-range" class="panel__range"></p>
+          <p class="panel__text panel__text--dim">Fleet deployment comes next.</p>
+          <button id="btn-change" class="btn btn--ghost" type="button">Change Area</button>
+        </div>
+      </aside>
+    </div>
   </main>
 
-  <script src="js/main.js?v=2"></script>
+  <script src="js/main.js?v=4"></script>
 </body>
 </html>
