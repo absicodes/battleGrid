@@ -7,7 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/style.css?v=4">
+  <link rel="stylesheet" href="css/style.css?v=5">
 </head>
 <body>
   <!-- Shown instead of the game on small screens (phones, small tablets) -->
@@ -57,9 +57,9 @@
           <div id="axis-left-band" class="axis__band" hidden></div>
         </div>
         <div id="board" class="board" role="img" aria-label="Battle space map, 100 by 100 grid">
-          <svg class="board__grid" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
-            <path id="grid-minor" class="board__grid-minor"></path>
-            <path id="grid-major" class="board__grid-major"></path>
+          <svg id="board-grid" class="board__grid" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+            <path class="board__grid-minor"></path>
+            <path class="board__grid-major"></path>
           </svg>
           <div id="selector" class="selector" tabindex="0" hidden
                aria-label="Battle space selector. Use arrow keys to move, hold Shift for bigger steps."></div>
@@ -89,18 +89,34 @@
           <button id="btn-confirm" class="btn" type="button">Confirm Battle Space</button>
         </div>
 
-        <!-- Stage 3: selection locked in -->
+        <!-- Stage 3: selection frozen, then on to the split view -->
         <div id="stage-locked" class="panel__stage" hidden>
           <h2 class="panel__title">Battle space locked</h2>
           <p class="panel__text">Your battle will be fought in</p>
           <p id="locked-range" class="panel__range"></p>
-          <p class="panel__text panel__text--dim">Fleet deployment comes next.</p>
-          <button id="btn-change" class="btn btn--ghost" type="button">Change Area</button>
+          <p class="panel__text panel__text--dim">Moving to battle stations&hellip;</p>
         </div>
       </aside>
     </div>
   </main>
 
-  <script src="js/main.js?v=4"></script>
+  <!-- Battle: split screen with the chosen battle space (left) and a plain grid (right) -->
+  <main id="battle" class="screen battle" hidden>
+    <header class="battle__header">
+      <span id="battle-commander" class="battle__commander"></span>
+      <span class="battle__divider" aria-hidden="true">&middot;</span>
+      <span>Battle space <strong id="battle-range"></strong></span>
+    </header>
+    <div class="battle__halves">
+      <section class="battle__half" aria-label="Your battle space">
+        <div id="battle-map" class="board-wrap board-wrap--battle"></div>
+      </section>
+      <section class="battle__half" aria-label="Empty grid">
+        <div id="battle-grid" class="board-wrap board-wrap--battle board-wrap--plain"></div>
+      </section>
+    </div>
+  </main>
+
+  <script src="js/main.js?v=5"></script>
 </body>
 </html>

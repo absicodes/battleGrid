@@ -5,6 +5,7 @@ const GRID_SIZE = 100;     // full battle space is GRID_SIZE x GRID_SIZE
 const AREA_SIZE = 15;      // the player's chosen battle space is AREA_SIZE x AREA_SIZE
 const LABEL_EVERY = 5;     // axis labels shown on the first cell and every 5th cell
 const MAJOR_LINE_EVERY = 10;
+const LOCKED_PAUSE_MS = 1500;   // how long the frozen selection is shown before the split view
 
 let playerName = "";
 
@@ -38,12 +39,10 @@ function clamp(value, min, max) {
 
 /* ---------- Battle space board ---------- */
 
-function buildAxes() {
-  const top = document.getElementById("axis-top");
-  const left = document.getElementById("axis-left");
-
-  for (let i = 0; i < GRID_SIZE; i++) {
-    const showLabel = i === 0 || (i + 1) % LABEL_EVERY === 0;
+// Fills the top (letters) and left (numbers) axes with labels.
+function buildAxes(top, left, cells, labelEvery = 1) {
+  for (let i = 0; i < cells; i++) {
+    const showLabel = labelEvery === 1 || i === 0 || (i + 1) % labelEvery === 0;
 
     const colCell = document.createElement("span");
     colCell.className = "axis__label";
@@ -57,19 +56,38 @@ function buildAxes() {
   }
 }
 
-function buildGridLines() {
+// Draws the grid lines into an SVG whose viewBox is 0 0 cells cells.
+function buildGridLines(svg, cells, majorEvery = 0) {
   let minor = "";
   let major = "";
-  for (let i = 1; i < GRID_SIZE; i++) {
-    const line = `M${i} 0V${GRID_SIZE}M0 ${i}H${GRID_SIZE}`;
-    if (i % MAJOR_LINE_EVERY === 0) {
+  for (let i = 1; i < cells; i++) {
+    const line = `M${i} 0V${cells}M0 ${i}H${cells}`;
+    if (majorEvery && i % majorEvery === 0) {
       major += line;
     } else {
       minor += line;
     }
   }
-  document.getElementById("grid-minor").setAttribute("d", minor);
-  document.getElementById("grid-major").setAttribute("d", major);
+  svg.querySelector(".board__grid-minor").setAttribute("d", minor);
+  svg.querySelector(".board__grid-major").setAttribute("d", major);
+}
+
+// Builds a labelled cells x cells board inside `wrap` and returns the board element.
+function createBoard(wrap, cells) {
+  wrap.style.setProperty("--cells", cells);
+  wrap.innerHTML = `
+    <div class="axis-corner" aria-hidden="true"></div>
+    <div class="axis axis--top" aria-hidden="true"></div>
+    <div class="axis axis--left" aria-hidden="true"></div>
+    <div class="board">
+      <svg class="board__grid" viewBox="0 0 ${cells} ${cells}" preserveAspectRatio="none" aria-hidden="true">
+        <path class="board__grid-minor"></path>
+        <path class="board__grid-major"></path>
+      </svg>
+    </div>`;
+  buildAxes(wrap.querySelector(".axis--top"), wrap.querySelector(".axis--left"), cells);
+  buildGridLines(wrap.querySelector(".board__grid"), cells);
+  return wrap.querySelector(".board");
 }
 
 // Converts a pointer position to the grid cell underneath it.
@@ -196,21 +214,41 @@ function setupStages() {
   });
 
   document.getElementById("btn-confirm").addEventListener("click", () => {
-    battleSpace = { col: selection.col, row: selection.row, size: AREA_SIZE };
+    // The battle space is frozen from here on; there is no way back to the selector.
+    battleSpace = Object.freeze({ col: selection.col, row: selection.row, size: AREA_SIZE });
     document.getElementById("locked-range").textContent = rangeLabel(battleSpace.col, battleSpace.row);
     showStage("locked");
+    setTimeout(showBattle, LOCKED_PAUSE_MS);
   });
+}
 
-  document.getElementById("btn-change").addEventListener("click", () => {
-    battleSpace = null;
-    showStage("select");
-  });
+/* ---------- Battle: split screen ---------- */
+
+function showBattle() {
+  const game = document.getElementById("game");
+  const battle = document.getElementById("battle");
+
+  document.getElementById("battle-commander").textContent = `Commander ${playerName}`;
+  document.getElementById("battle-range").textContent = rangeLabel(battleSpace.col, battleSpace.row);
+
+  // Left: the chosen 15 x 15 slice of the terrain, scaled up to fill the board.
+  const map = createBoard(document.getElementById("battle-map"), battleSpace.size);
+  const zoom = (GRID_SIZE / battleSpace.size) * 100;
+  const maxOffset = GRID_SIZE - battleSpace.size;
+  map.style.backgroundSize = `${zoom}% ${zoom}%`;
+  map.style.backgroundPosition = `${(battleSpace.col / maxOffset) * 100}% ${(battleSpace.row / maxOffset) * 100}%`;
+
+  // Right: the same grid with no background.
+  createBoard(document.getElementById("battle-grid"), battleSpace.size);
+
+  game.hidden = true;
+  battle.hidden = false;
 }
 
 function startGame() {
   document.getElementById("game-commander").textContent = `Commander ${playerName}`;
-  buildAxes();
-  buildGridLines();
+  buildAxes(document.getElementById("axis-top"), document.getElementById("axis-left"), GRID_SIZE, LABEL_EVERY);
+  buildGridLines(document.getElementById("board-grid"), GRID_SIZE, MAJOR_LINE_EVERY);
   setupSelector();
   setupStages();
   showStage("view");
