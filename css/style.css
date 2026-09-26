@@ -112,6 +112,75 @@ body {
   animation: fade-up 0.8s ease 1s both;
 }
 
+/* ---------- Name entry ---------- */
+
+.name-form {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  width: min(100%, 360px);
+  margin-top: 28px;
+  animation: fade-up 0.8s ease 0.6s both;
+}
+
+.name-form__label {
+  font-size: clamp(1.1rem, 3vw, 1.4rem);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--accent-soft);
+}
+
+.name-form__input {
+  width: 100%;
+  padding: 12px 16px;
+  border: 2px solid rgba(31, 182, 232, 0.4);
+  border-radius: 8px;
+  background: rgba(4, 18, 31, 0.7);
+  color: var(--text);
+  font: inherit;
+  font-size: 1.2rem;
+  text-align: center;
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.name-form__input::placeholder {
+  color: var(--text-dim);
+}
+
+.name-form__input:focus {
+  border-color: var(--sea);
+  box-shadow: 0 0 0 4px rgba(31, 182, 232, 0.2);
+}
+
+.name-form__button {
+  padding: 12px 40px;
+  border: none;
+  border-radius: 8px;
+  background: linear-gradient(180deg, var(--accent-soft), var(--accent));
+  color: #3a1f00;
+  font: inherit;
+  font-size: 1.2rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  cursor: pointer;
+  box-shadow: 0 6px 18px rgba(247, 162, 27, 0.3);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.name-form__button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 24px rgba(247, 162, 27, 0.4);
+}
+
+.name-form__button:focus-visible {
+  outline: 3px solid var(--sea);
+  outline-offset: 3px;
+}
+
 @keyframes logo-in {
   from { opacity: 0; transform: scale(0.85) translateY(20px); }
   to   { opacity: 1; transform: scale(1) translateY(0); }

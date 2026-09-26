@@ -10,11 +10,23 @@
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-  <!-- Splash screen: shown for 5 seconds on load -->
-  <section id="splash" class="screen splash" aria-label="Welcome">
+  <!-- Name entry: first screen on load -->
+  <section id="name-entry" class="screen splash" aria-label="Enter your name">
     <div class="splash__glow" aria-hidden="true"></div>
     <img class="splash__logo" src="Images/Game%20Logo.png" alt="BattleGrid">
-    <p class="splash__welcome">Welcome aboard, Commander</p>
+    <form id="name-form" class="name-form">
+      <label class="name-form__label" for="player-name">What should we call you, Commander?</label>
+      <input id="player-name" class="name-form__input" type="text" maxlength="20"
+             autocomplete="nickname" placeholder="Enter your name" required>
+      <button class="name-form__button" type="submit">Set Sail</button>
+    </form>
+  </section>
+
+  <!-- Splash screen: shown for 5 seconds after the name is entered -->
+  <section id="splash" class="screen splash" aria-label="Welcome" hidden>
+    <div class="splash__glow" aria-hidden="true"></div>
+    <img class="splash__logo" src="Images/Game%20Logo.png" alt="BattleGrid">
+    <p id="welcome-message" class="splash__welcome">Welcome Commander</p>
     <div class="splash__loader" role="progressbar" aria-label="Loading">
       <div class="splash__loader-fill"></div>
     </div>
