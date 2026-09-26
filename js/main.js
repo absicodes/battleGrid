@@ -237,11 +237,19 @@ function setupStages() {
   });
 
   document.getElementById("btn-confirm").addEventListener("click", () => {
-    // The battle space is frozen from here on; there is no way back to the selector.
+    // Freeze the battle space; only the Reselect button on the split screen can clear it.
     battleSpace = Object.freeze({ col: selection.col, row: selection.row, size: AREA_SIZE });
     document.getElementById("locked-range").textContent = rangeLabel(battleSpace.col, battleSpace.row);
     showStage("locked");
     setTimeout(showBattle, LOCKED_PAUSE_MS);
+  });
+
+  // From the split screen, go back to the full map with the frame where it was.
+  document.getElementById("btn-reselect").addEventListener("click", () => {
+    battleSpace = null;
+    document.getElementById("battle").hidden = true;
+    document.getElementById("game").hidden = false;
+    showStage("select");
   });
 }
 

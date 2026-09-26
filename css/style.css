@@ -491,7 +491,7 @@ body {
 
 .battle {
   --axis: 36px;
-  --battle-board: min(calc(50vw - var(--axis) - 76px), calc(100vh - 124px));
+  --battle-board: min(calc(50vw - var(--axis) - 76px), calc(100vh - 190px));
   justify-content: flex-start;
   padding: 0;
   background: var(--bg-deep);
@@ -509,8 +509,14 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  padding: 16px 16px 24px;
+  justify-content: flex-start;
+  padding: 24px 16px;
+}
+
+.battle__reselect {
+  width: auto;
+  margin-top: 16px;
+  padding: 10px 24px;
 }
 
 .battle__title {
