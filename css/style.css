@@ -513,10 +513,30 @@ body {
   padding: 24px 16px;
 }
 
-.battle__reselect {
-  width: auto;
+.battle__actions {
+  display: flex;
+  gap: 12px;
   margin-top: 16px;
+}
+
+.battle__actions[hidden],
+.battle__locked-note[hidden] {
+  display: none;
+}
+
+.battle__actions .btn {
+  width: auto;
   padding: 10px 24px;
+}
+
+.battle__locked-note {
+  margin: 16px 0 0;
+  padding: 10px 0;
+  font-size: 1.05rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--sea);
 }
 
 .battle__title {

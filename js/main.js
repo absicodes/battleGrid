@@ -12,7 +12,8 @@ let opponentName = "";     // picked at random from OPPONENT_NAMES (js/names.js)
 
 // Top-left cell (0-based) of the player's battle space.
 const selection = { col: 0, row: 0 };
-let battleSpace = null;    // set once the player confirms, e.g. { col, row, size }
+let battleSpace = null;    // set once the player selects, e.g. { col, row, size }
+let battleSpaceLocked = false;  // true once confirmed on the split screen; no reselecting after
 
 // 0 -> A, 25 -> Z, 26 -> AA, 99 -> CV
 function columnLabel(index) {
@@ -236,8 +237,8 @@ function setupStages() {
     showStage("select");
   });
 
-  document.getElementById("btn-confirm").addEventListener("click", () => {
-    // Freeze the battle space; only the Reselect button on the split screen can clear it.
+  document.getElementById("btn-select").addEventListener("click", () => {
+    // Freeze the selection; the split screen can still send the player back until they confirm.
     battleSpace = Object.freeze({ col: selection.col, row: selection.row, size: AREA_SIZE });
     document.getElementById("locked-range").textContent = rangeLabel(battleSpace.col, battleSpace.row);
     showStage("locked");
@@ -246,10 +247,18 @@ function setupStages() {
 
   // From the split screen, go back to the full map with the frame where it was.
   document.getElementById("btn-reselect").addEventListener("click", () => {
+    if (battleSpaceLocked) return;
     battleSpace = null;
     document.getElementById("battle").hidden = true;
     document.getElementById("game").hidden = false;
     showStage("select");
+  });
+
+  // Final lock: no more reselecting for the rest of the game.
+  document.getElementById("btn-lock").addEventListener("click", () => {
+    battleSpaceLocked = true;
+    document.getElementById("battle-actions").hidden = true;
+    document.getElementById("battle-locked-note").hidden = false;
   });
 }
 
