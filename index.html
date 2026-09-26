@@ -4,8 +4,29 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>BattleGrid</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-  <h1>BattleGrid</h1>
+  <!-- Splash screen: shown for 5 seconds on load -->
+  <section id="splash" class="screen splash" aria-label="Welcome">
+    <div class="splash__glow" aria-hidden="true"></div>
+    <img class="splash__logo" src="Images/Game%20Logo.png" alt="BattleGrid">
+    <p class="splash__welcome">Welcome aboard, Commander</p>
+    <div class="splash__loader" role="progressbar" aria-label="Loading">
+      <div class="splash__loader-fill"></div>
+    </div>
+    <p class="splash__status">Charting the waters&hellip;</p>
+  </section>
+
+  <!-- Main game: built out in upcoming iterations -->
+  <main id="game" class="screen game" hidden>
+    <h1 class="game__title">BattleGrid</h1>
+    <p class="game__note">The battlefield is being prepared. Stay tuned.</p>
+  </main>
+
+  <script src="js/main.js"></script>
 </body>
 </html>
