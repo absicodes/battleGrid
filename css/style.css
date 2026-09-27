@@ -600,7 +600,7 @@ body {
 /* ---------- Fleet deployment ---------- */
 
 .deploy {
-  --dock: calc(var(--battle-board) * 0.375);   /* 6 of the board's 16 steps: same scale as the board */
+  --dock: calc(var(--battle-board) * 0.5);   /* 8 of the board's 16 steps: same scale as the board */
   position: absolute;
   inset: 0;
   z-index: 2;
