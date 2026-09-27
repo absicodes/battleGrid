@@ -222,13 +222,19 @@ function endBattle(playerWon) {
   battle.over = true;
   battle.opponentBoard.classList.remove("is-targeting", "is-waiting");
   hideReticle();
-  document.getElementById("turn-banner").textContent = playerWon ? "Victory!" : "Defeat";
+  document.getElementById("turn-banner").hidden = true;
   document.getElementById("game-over-title").textContent = playerWon ? "Victory!" : "Defeat";
   document.getElementById("game-over-text").textContent = playerWon
     ? `You sank Commander ${opponentName}'s entire fleet, Commander ${playerName}.`
     : `Commander ${opponentName} sank your entire fleet.`;
   document.getElementById("game-over").classList.toggle("is-defeat", !playerWon);
   document.getElementById("game-over").hidden = false;
+}
+
+// Closing the result leaves the final boards on view, with Play Again where the turn banner was.
+function closeResult() {
+  document.getElementById("game-over").hidden = true;
+  document.getElementById("btn-play-again").hidden = false;
 }
 
 // Reloads for a fresh game, remembering the name so the player goes straight to choosing a battle space.
@@ -255,6 +261,7 @@ function startBattle() {
   battle.opponentBoard.addEventListener("click", playerFire);
   battle.opponentBoard.addEventListener("pointermove", moveReticle);
   battle.opponentBoard.addEventListener("pointerleave", hideReticle);
+  document.getElementById("btn-close-result").addEventListener("click", closeResult);
   document.getElementById("btn-play-again").addEventListener("click", playAgain);
 
   document.getElementById("turn-banner").hidden = false;

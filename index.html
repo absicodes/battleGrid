@@ -4,10 +4,12 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>BattleGrid</title>
+  <link rel="icon" type="image/png" sizes="32x32" href="Images/favicon-32.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="Images/favicon-180.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/style.css?v=19">
+  <link rel="stylesheet" href="css/style.css?v=20">
 </head>
 <body>
   <!-- Shown instead of the game on small screens (phones, small tablets) -->
@@ -137,20 +139,21 @@
     </div>
 
     <p id="turn-banner" class="turn-banner" aria-live="polite" hidden></p>
+    <button id="btn-play-again" class="turn-banner turn-banner--button" type="button" hidden>Play Again</button>
 
     <!-- End of game -->
     <div id="game-over" class="game-over" hidden>
       <div class="game-over__card" role="dialog" aria-labelledby="game-over-title">
         <h2 id="game-over-title" class="game-over__title"></h2>
         <p id="game-over-text" class="game-over__text"></p>
-        <button id="btn-play-again" class="btn" type="button">Play Again</button>
+        <button id="btn-close-result" class="btn" type="button">Close</button>
       </div>
     </div>
   </main>
 
   <script src="js/names.js?v=6"></script>
   <script src="js/fleet.js?v=19"></script>
-  <script src="js/battle.js?v=19"></script>
+  <script src="js/battle.js?v=20"></script>
   <script src="js/main.js?v=19"></script>
 </body>
 </html>
