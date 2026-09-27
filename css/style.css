@@ -800,6 +800,10 @@ body {
   cursor: crosshair;
 }
 
+.board.is-waiting {
+  cursor: wait;
+}
+
 .reticle {
   position: absolute;
   z-index: 4;

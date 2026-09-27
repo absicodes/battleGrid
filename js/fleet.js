@@ -236,7 +236,7 @@ function confirmDeployment() {
     el.classList.remove("ship--draggable");
   }
   document.getElementById("deploy").hidden = true;
-  document.getElementById("battle-locked-note").textContent = "Fleet deployed";
+  document.getElementById("battle-locked-note").hidden = true;
   startBattle();   // js/battle.js
 }
 

@@ -3,7 +3,8 @@
 // along the ship until it sinks it.
 
 const PIN_IMAGES = { hit: "Images/RedPinFire.png", miss: "Images/BluePin.png" };
-const OPPONENT_TURN_DELAY_MS = 900;
+const OPPONENT_THINK_MIN_MS = 1000;   // the opponent "thinks" for 1-2 seconds before firing
+const OPPONENT_THINK_MAX_MS = 2000;
 
 const battle = {
   opponentBoard: null,
@@ -115,7 +116,8 @@ function playerFire(event) {
     return;
   }
   setTurn("opponent");
-  setTimeout(opponentFire, OPPONENT_TURN_DELAY_MS);
+  const thinkMs = OPPONENT_THINK_MIN_MS + Math.random() * (OPPONENT_THINK_MAX_MS - OPPONENT_THINK_MIN_MS);
+  setTimeout(opponentFire, thinkMs);
 }
 
 /* ---------- Opponent's turn ---------- */
@@ -190,9 +192,12 @@ function opponentFire() {
 
 function setTurn(turn) {
   battle.turn = turn;
+  // While the opponent thinks, the enemy grid ignores clicks (see playerFire) and shows a wait cursor.
   battle.opponentBoard.classList.toggle("is-targeting", turn === "player");
+  battle.opponentBoard.classList.toggle("is-waiting", turn !== "player");
+  if (turn !== "player") hideReticle();
   document.getElementById("turn-banner").textContent =
-    turn === "player" ? "Your turn: fire at a point on the enemy grid" : `Commander ${opponentName} is taking aim…`;
+    turn === "player" ? "Your turn" : `Commander ${opponentName} is taking aim…`;
   document.getElementById("turn-banner").classList.toggle("is-opponent", turn !== "player");
 }
 
@@ -215,7 +220,7 @@ function hideReticle() {
 
 function endBattle(playerWon) {
   battle.over = true;
-  battle.opponentBoard.classList.remove("is-targeting");
+  battle.opponentBoard.classList.remove("is-targeting", "is-waiting");
   hideReticle();
   document.getElementById("turn-banner").textContent = playerWon ? "Victory!" : "Defeat";
   document.getElementById("game-over-title").textContent = playerWon ? "Victory!" : "Defeat";
@@ -224,6 +229,16 @@ function endBattle(playerWon) {
     : `Commander ${opponentName} sank your entire fleet.`;
   document.getElementById("game-over").classList.toggle("is-defeat", !playerWon);
   document.getElementById("game-over").hidden = false;
+}
+
+// Reloads for a fresh game, remembering the name so the player goes straight to choosing a battle space.
+function playAgain() {
+  try {
+    sessionStorage.setItem(REPLAY_NAME_KEY, playerName);   // js/main.js
+  } catch {
+    // Storage unavailable: the reload simply starts from the name screen.
+  }
+  location.reload();
 }
 
 function startBattle() {
@@ -240,7 +255,7 @@ function startBattle() {
   battle.opponentBoard.addEventListener("click", playerFire);
   battle.opponentBoard.addEventListener("pointermove", moveReticle);
   battle.opponentBoard.addEventListener("pointerleave", hideReticle);
-  document.getElementById("btn-play-again").addEventListener("click", () => location.reload());
+  document.getElementById("btn-play-again").addEventListener("click", playAgain);
 
   document.getElementById("turn-banner").hidden = false;
   setStatus("incoming-status", "");

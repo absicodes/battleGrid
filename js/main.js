@@ -6,7 +6,8 @@ const AREA_SIZE = 15;      // the player's chosen battle space is AREA_SIZE x AR
 const LABEL_EVERY = 5;     // axis labels shown on the first cell and every 5th cell
 const MAJOR_LINE_EVERY = 10;
 const BATTLE_SPACE_IMAGE = "Images/BattleGridSpace1.jpg";   // must match the .board background in css/style.css
-const LOCKED_PAUSE_MS = 1500;   // how long the frozen selection is shown before the split view
+const LOCKED_PAUSE_MS = 1500;
+const REPLAY_NAME_KEY = "battlegrid-replay-name";   // set by Play Again (js/battle.js)   // how long the frozen selection is shown before the split view
 
 let playerName = "";
 let opponentName = "";     // picked at random from OPPONENT_NAMES (js/names.js) each new game
@@ -241,12 +242,14 @@ function showStage(name) {
   }
 }
 
+function startSelecting() {
+  const centre = Math.floor((GRID_SIZE - AREA_SIZE) / 2);
+  moveSelection(centre, centre);
+  showStage("select");
+}
+
 function setupStages() {
-  document.getElementById("btn-choose").addEventListener("click", () => {
-    const centre = Math.floor((GRID_SIZE - AREA_SIZE) / 2);
-    moveSelection(centre, centre);
-    showStage("select");
-  });
+  document.getElementById("btn-choose").addEventListener("click", startSelecting);
 
   document.getElementById("btn-select").addEventListener("click", () => {
     // Freeze the selection; the split screen can still send the player back until they confirm.
@@ -330,9 +333,31 @@ function showSplash() {
   setTimeout(showGame, SPLASH_DURATION_MS);
 }
 
+// After Play Again the name is already known: skip the name and splash screens
+// and go straight to choosing a battle space.
+function takeReplayName() {
+  try {
+    const name = sessionStorage.getItem(REPLAY_NAME_KEY);
+    sessionStorage.removeItem(REPLAY_NAME_KEY);
+    return name;
+  } catch {
+    return null;
+  }
+}
+
 document.addEventListener("DOMContentLoaded", () => {
   const form = document.getElementById("name-form");
   const input = document.getElementById("player-name");
+
+  const replayName = takeReplayName();
+  if (replayName) {
+    playerName = replayName;
+    document.getElementById("name-entry").hidden = true;
+    document.getElementById("game").hidden = false;
+    startGame();
+    startSelecting();
+    return;
+  }
 
   input.focus();
 
