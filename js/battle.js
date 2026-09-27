@@ -218,10 +218,21 @@ function hideReticle() {
   document.getElementById("reticle").hidden = true;
 }
 
+// Shows the opponent's ships that are still afloat (sunk ones are already on the board).
+// Any hit pins stay on top of them.
+function revealOpponentFleet() {
+  for (const { ship, rotation, col, row, hits } of battle.opponentFleet) {
+    if (hits.size === ship.size) continue;
+    const centre = shipCentre(ship, rotation, col, row);
+    battle.opponentBoard.appendChild(createShipEl(ship, rotation, BOARD_STEPS, centre.x, centre.y));
+  }
+}
+
 function endBattle(playerWon) {
   battle.over = true;
   battle.opponentBoard.classList.remove("is-targeting", "is-waiting");
   hideReticle();
+  revealOpponentFleet();
   document.getElementById("turn-banner").hidden = true;
   document.getElementById("game-over-title").textContent = playerWon ? "Victory!" : "Defeat";
   document.getElementById("game-over-text").textContent = playerWon
