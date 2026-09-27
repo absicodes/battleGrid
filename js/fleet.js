@@ -3,11 +3,11 @@
 
 // size = number of grid points the ship covers; ratio = image height / width
 const SHIPS = [
-  { id: "carrier",    name: "Carrier",     size: 6, img: "Images/Ships/AircraftCareer.png", ratio: 724 / 2172 },
-  { id: "battleship", name: "Battle Ship", size: 5, img: "Images/Ships/BattleShip.png",     ratio: 733 / 2146 },
-  { id: "cruiser",    name: "Cruiser",     size: 5, img: "Images/Ships/Cruiser.png",        ratio: 733 / 2146 },
-  { id: "destroyer",  name: "Destroyer",   size: 5, img: "Images/Ships/Destroyer.png",      ratio: 724 / 2172 },
-  { id: "submarine",  name: "Submarine",   size: 5, img: "Images/Ships/Submarine.png",      ratio: 721 / 2181 },
+  { id: "carrier",    name: "Carrier",     size: 6, img: "Images/Ships/AircraftCareer.png", destroyedImg: "Images/Ships/AircraftCareerDestroyed.png", ratio: 724 / 2172 },
+  { id: "battleship", name: "Battle Ship", size: 5, img: "Images/Ships/BattleShip.png",     destroyedImg: "Images/Ships/BattleShipDestroyed.png", ratio: 733 / 2146 },
+  { id: "cruiser",    name: "Cruiser",     size: 5, img: "Images/Ships/Cruiser.png",        destroyedImg: "Images/Ships/CruiserDestroyed.png", ratio: 733 / 2146 },
+  { id: "destroyer",  name: "Destroyer",   size: 5, img: "Images/Ships/Destroyer.png",      destroyedImg: "Images/Ships/DestroyerDestroyed.png", ratio: 724 / 2172 },
+  { id: "submarine",  name: "Submarine",   size: 5, img: "Images/Ships/Submarine.png",      destroyedImg: "Images/Ships/SubmarineDestroyed.png", ratio: 721 / 2181 },
 ];
 
 const DOCK_STEPS = 8;              // the dock is an 8 x 8 grid
@@ -32,11 +32,11 @@ function footprint(ship, rotation) {
 // Creates a ship element in a square container of `steps` steps, centred on cx, cy (step units).
 // The element covers only the ship's footprint (so it is what you grab); the picture inside
 // keeps its natural proportions and is rotated to match.
-function createShipEl(ship, rotation, steps, cx, cy) {
+function createShipEl(ship, rotation, steps, cx, cy, src = ship.img) {
   const { w, h } = footprint(ship, rotation);
   const el = document.createElement("div");
   el.className = "ship";
-  el.innerHTML = `<img src="${ship.img}" alt="${ship.name}" draggable="false">`;
+  el.innerHTML = `<img src="${src}" alt="${ship.name}" draggable="false">`;
   el.style.width = `${(w / steps) * 100}%`;
   el.style.height = `${(h / steps) * 100}%`;
   positionShipEl(el, steps, cx, cy);
@@ -237,6 +237,7 @@ function confirmDeployment() {
   }
   document.getElementById("deploy").hidden = true;
   document.getElementById("battle-locked-note").textContent = "Fleet deployed";
+  startBattle();   // js/battle.js
 }
 
 function startDeployment(board) {
@@ -264,4 +265,7 @@ function startDeployment(board) {
   renderDock();
   updateDeployStatus();
   document.getElementById("deploy").hidden = false;
+
+  // Get the battle pictures downloading while the player deploys.
+  preloadImages([...SHIPS.map((ship) => ship.destroyedImg), ...Object.values(PIN_IMAGES)]);   // js/main.js, js/battle.js
 }

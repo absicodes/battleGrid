@@ -770,6 +770,144 @@ body {
   opacity: 0.85;
 }
 
+/* ---------- Battle: firing ---------- */
+
+.pin {
+  position: absolute;
+  z-index: 3;
+  width: calc(100% / 16 * 0.8);
+  height: auto;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.6));
+}
+
+.pin--hit {
+  width: calc(100% / 16 * 0.95);
+  animation: pin-drop 0.35s ease-out both;
+}
+
+.pin--miss {
+  animation: pin-drop 0.35s ease-out both;
+}
+
+@keyframes pin-drop {
+  from { opacity: 0; transform: translate(-50%, -50%) scale(1.8); }
+  to   { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+}
+
+.board.is-targeting {
+  cursor: crosshair;
+}
+
+.reticle {
+  position: absolute;
+  z-index: 4;
+  width: calc(100% / 16 * 0.9);
+  aspect-ratio: 1;
+  border: 2px solid var(--accent);
+  border-radius: 50%;
+  box-shadow: 0 0 10px rgba(247, 162, 27, 0.7);
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+
+.reticle[hidden] {
+  display: none;
+}
+
+.battle__status {
+  min-height: 1.4em;
+  margin: 8px 0 0;
+  font-size: 1rem;
+  letter-spacing: 0.04em;
+  color: var(--text-dim);
+  text-align: center;
+}
+
+.battle__status--fire {
+  margin-top: 16px;
+}
+
+.turn-banner {
+  position: fixed;
+  left: 50%;
+  bottom: 20px;
+  z-index: 5;
+  margin: 0;
+  padding: 10px 24px;
+  border: 2px solid var(--accent);
+  border-radius: 999px;
+  background: rgba(7, 27, 45, 0.95);
+  color: var(--accent-soft);
+  font-size: 1.05rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  transform: translateX(-50%);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+}
+
+.turn-banner.is-opponent {
+  border-color: rgba(143, 178, 204, 0.5);
+  color: var(--text-dim);
+}
+
+.turn-banner[hidden] {
+  display: none;
+}
+
+.game-over {
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(2, 10, 18, 0.7);
+  animation: fade-up 0.5s ease both;
+}
+
+.game-over[hidden] {
+  display: none;
+}
+
+.game-over__card {
+  min-width: 360px;
+  padding: 32px 40px;
+  border: 2px solid var(--accent);
+  border-radius: 12px;
+  background: var(--bg-mid);
+  text-align: center;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+}
+
+.game-over.is-defeat .game-over__card {
+  border-color: #e0443a;
+}
+
+.game-over__title {
+  margin: 0 0 12px;
+  font-size: 2.6rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent-soft);
+}
+
+.game-over.is-defeat .game-over__title {
+  color: #ff7a6e;
+}
+
+.game-over__text {
+  margin: 0 0 24px;
+  font-size: 1.15rem;
+}
+
+.game-over__card .btn {
+  width: auto;
+  padding: 12px 40px;
+}
+
 /* ---------- Small-screen notice ---------- */
 
 .small-screen {
