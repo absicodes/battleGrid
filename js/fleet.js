@@ -4,9 +4,9 @@
 const SHIPS = [
   { id: "carrier",    name: "Carrier",     size: 6, img: "Images/Ships/AircraftCareer.png", ratio: 724 / 2172 },
   { id: "battleship", name: "Battle Ship", size: 5, img: "Images/Ships/BattleShip.png",     ratio: 733 / 2146 },
-  { id: "cruiser",    name: "Cruiser",     size: 4, img: "Images/Ships/Cruiser.png",        ratio: 733 / 2146 },
-  { id: "destroyer",  name: "Destroyer",   size: 4, img: "Images/Ships/Destroyer.png",      ratio: 724 / 2172 },
-  { id: "submarine",  name: "Submarine",   size: 4, img: "Images/Ships/Submarine.png",      ratio: 721 / 2181 },
+  { id: "cruiser",    name: "Cruiser",     size: 5, img: "Images/Ships/Cruiser.png",        ratio: 733 / 2146 },
+  { id: "destroyer",  name: "Destroyer",   size: 5, img: "Images/Ships/Destroyer.png",      ratio: 724 / 2172 },
+  { id: "submarine",  name: "Submarine",   size: 5, img: "Images/Ships/Submarine.png",      ratio: 721 / 2181 },
 ];
 
 const DOCK_STEPS = 8;              // the dock is an 8 x 8 grid

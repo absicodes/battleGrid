@@ -5,6 +5,7 @@ const GRID_SIZE = 100;     // full battle space is GRID_SIZE x GRID_SIZE
 const AREA_SIZE = 15;      // the player's chosen battle space is AREA_SIZE x AREA_SIZE
 const LABEL_EVERY = 5;     // axis labels shown on the first cell and every 5th cell
 const MAJOR_LINE_EVERY = 10;
+const BATTLE_SPACE_IMAGE = "Images/BattleGridSpace1.jpg";   // must match the .board background in css/style.css
 const LOCKED_PAUSE_MS = 1500;   // how long the frozen selection is shown before the split view
 
 let playerName = "";
@@ -33,6 +34,16 @@ function cellLabel(col, row) {
 
 function rangeLabel(col, row) {
   return `${cellLabel(col, row)} – ${cellLabel(col + AREA_SIZE - 1, row + AREA_SIZE - 1)}`;
+}
+
+// Starts downloading images in the background so they are cached before they are shown.
+const preloaded = [];
+function preloadImages(sources) {
+  for (const src of sources) {
+    const img = new Image();
+    img.src = src;
+    preloaded.push(img);
+  }
 }
 
 function clamp(value, min, max) {
@@ -242,6 +253,7 @@ function setupStages() {
     battleSpace = Object.freeze({ col: selection.col, row: selection.row, size: AREA_SIZE });
     document.getElementById("locked-range").textContent = rangeLabel(battleSpace.col, battleSpace.row);
     showStage("locked");
+    preloadImages(SHIPS.map((ship) => ship.img));   // js/fleet.js
     setTimeout(showBattle, LOCKED_PAUSE_MS);
   });
 
@@ -314,6 +326,7 @@ function showSplash() {
   document.getElementById("welcome-message").textContent = `Welcome Commander ${playerName}`;
   document.getElementById("name-entry").hidden = true;
   document.getElementById("splash").hidden = false;
+  preloadImages([BATTLE_SPACE_IMAGE]);
   setTimeout(showGame, SPLASH_DURATION_MS);
 }
 
