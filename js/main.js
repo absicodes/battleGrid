@@ -259,6 +259,7 @@ function setupStages() {
     battleSpaceLocked = true;
     document.getElementById("battle-actions").hidden = true;
     document.getElementById("battle-locked-note").hidden = false;
+    startDeployment(document.querySelector("#battle-map .board"));   // js/fleet.js
   });
 }
 

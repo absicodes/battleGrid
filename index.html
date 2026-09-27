@@ -7,7 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/style.css?v=11">
+  <link rel="stylesheet" href="css/style.css?v=12">
 </head>
 <body>
   <!-- Shown instead of the game on small screens (phones, small tablets) -->
@@ -115,11 +115,28 @@
       <section class="battle__half" aria-labelledby="opponent-space-title">
         <h2 id="opponent-space-title" class="battle__title"></h2>
         <div id="battle-grid" class="board-wrap board-wrap--battle board-wrap--plain"></div>
+
+        <!-- Fleet deployment: masks the opponent's side once the battle space is confirmed -->
+        <div id="deploy" class="deploy" hidden>
+          <h3 class="deploy__title">Deploy your fleet</h3>
+          <p class="deploy__hint">Pick a ship, rotate it if needed, then drag it onto your battle space.</p>
+          <div class="deploy__stage">
+            <div id="dock" class="dock">
+              <svg class="dock__grid" viewBox="0 0 6 6" preserveAspectRatio="none" aria-hidden="true">
+                <path d="M1 0V6M2 0V6M3 0V6M4 0V6M5 0V6M0 1H6M0 2H6M0 3H6M0 4H6M0 5H6"></path>
+              </svg>
+            </div>
+            <button id="btn-rotate" class="btn btn--ghost deploy__rotate" type="button" disabled>&#x21bb; Rotate</button>
+          </div>
+          <div id="ship-buttons" class="deploy__ships"></div>
+          <p id="deploy-done" class="deploy__done" hidden>All ships deployed</p>
+        </div>
       </section>
     </div>
   </main>
 
   <script src="js/names.js?v=6"></script>
-  <script src="js/main.js?v=11"></script>
+  <script src="js/fleet.js?v=12"></script>
+  <script src="js/main.js?v=12"></script>
 </body>
 </html>
